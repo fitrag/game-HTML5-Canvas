@@ -63,6 +63,25 @@ const spriteFiles = {
   tile_star: "tile_star.png",
   tile_drop: "tile_drop.png",
   tile_gift: "tile_gift.png",
+  tile_locked_block: "tile_locked_block.png",
+  skill_boom: "skill_boom.png",
+  skill_laser_v: "skill_laser_v.png",
+  skill_laser_d: "skill_laser_d.png",
+  skill_boom_frame_1: "skill_boom_frame_1.png",
+  skill_boom_frame_2: "skill_boom_frame_2.png",
+  skill_boom_frame_3: "skill_boom_frame_3.png",
+  skill_boom_frame_4: "skill_boom_frame_4.png",
+  skill_boom_frame_5: "skill_boom_frame_5.png",
+  skill_laser_v_frame_1: "skill_laser_v_frame_1.png",
+  skill_laser_v_frame_2: "skill_laser_v_frame_2.png",
+  skill_laser_v_frame_3: "skill_laser_v_frame_3.png",
+  skill_laser_v_frame_4: "skill_laser_v_frame_4.png",
+  skill_laser_v_frame_5: "skill_laser_v_frame_5.png",
+  skill_laser_d_frame_1: "skill_laser_d_frame_1.png",
+  skill_laser_d_frame_2: "skill_laser_d_frame_2.png",
+  skill_laser_d_frame_3: "skill_laser_d_frame_3.png",
+  skill_laser_d_frame_4: "skill_laser_d_frame_4.png",
+  skill_laser_d_frame_5: "skill_laser_d_frame_5.png",
   fx_blue_burst: "fx_blue_burst.png",
   fx_coin_burst: "fx_coin_burst.png",
   fx_wallet_burst: "fx_wallet_burst.png",
@@ -79,6 +98,16 @@ const sprites = Object.fromEntries(Object.entries(spriteFiles).map(([key, file])
 const gameplayBg = new Image();
 gameplayBg.src = "assets/generated/gameplay-background.png";
 const tileSpriteKeys = ["tile_diamond", "tile_coin", "tile_wallet", "tile_star", "tile_drop", "tile_gift"];
+const skillSpriteKeys = {
+  boom: "skill_boom",
+  laserV: "skill_laser_v",
+  laserD: "skill_laser_d",
+};
+const skillFrameKeys = {
+  boom: ["skill_boom_frame_1", "skill_boom_frame_2", "skill_boom_frame_3", "skill_boom_frame_4", "skill_boom_frame_5"],
+  laserV: ["skill_laser_v_frame_1", "skill_laser_v_frame_2", "skill_laser_v_frame_3", "skill_laser_v_frame_4", "skill_laser_v_frame_5"],
+  laserD: ["skill_laser_d_frame_1", "skill_laser_d_frame_2", "skill_laser_d_frame_3", "skill_laser_d_frame_4", "skill_laser_d_frame_5"],
+};
 const fxSpriteKeys = ["fx_blue_burst", "fx_coin_burst", "fx_wallet_burst", "fx_pink_burst"];
 
 let selected = null;
@@ -274,6 +303,7 @@ function findMatches(board) {
   return { cells: [...hits.values()], groups };
 }
 function hasValidMove(board) {
+  if (hasUsableSkill(board)) return true;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
     for (const [dr, dc] of [[1, 0], [0, 1]]) {
       const nr = r + dr, nc = c + dc;
@@ -281,6 +311,18 @@ function hasValidMove(board) {
       const copy = cloneBoard(board);
       [copy[r][c], copy[nr][nc]] = [copy[nr][nc], copy[r][c]];
       if (findMatches(copy).cells.length) return true;
+    }
+  }
+  return false;
+}
+function hasUsableSkill(board) {
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const cell = board[r][c];
+    if (!cell?.special || isBlocked(cell)) continue;
+    for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+      const nr = r + dr, nc = c + dc;
+      if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
+      if (board[nr][nc] && !isBlocked(board[nr][nc])) return true;
     }
   }
   return false;
@@ -326,7 +368,14 @@ async function trySwap(a, b) {
     return;
   }
   state.moves = Math.max(0, state.moves - 1);
-  await resolveBoard(1, matches);
+  if (specialHit) {
+    await sleep(180);
+    dropTiles();
+    await sleep(180);
+    await resolveBoard(1);
+  } else {
+    await resolveBoard(1, matches);
+  }
   if (!hasValidMove(state.board)) shuffleBoard(false);
   checkLevelEnd();
   save();
@@ -338,12 +387,31 @@ function activateSpecial(cell) {
   const t = state.board[cell.r][cell.c];
   if (isBlocked(t) || !t?.special) return false;
   const cells = [];
+  cells.push(cell);
+  if (t.special === "boom") {
+    for (let r = cell.r - 1; r <= cell.r + 1; r++) {
+      for (let c = cell.c - 1; c <= cell.c + 1; c++) {
+        if (r >= 0 && c >= 0 && r < rows && c < cols) cells.push({ r, c });
+      }
+    }
+  }
   if (t.special === "lineH") for (let c = 0; c < cols; c++) cells.push({ r: cell.r, c });
-  if (t.special === "lineV") for (let r = 0; r < rows; r++) cells.push({ r, c: cell.c });
+  if (t.special === "lineV" || t.special === "laserV") for (let r = 0; r < rows; r++) cells.push({ r, c: cell.c });
+  if (t.special === "laserD") {
+    for (let r = 0; r < rows; r++) {
+      const offset = r - cell.r;
+      const cDown = cell.c + offset;
+      const cUp = cell.c - offset;
+      if (cDown >= 0 && cDown < cols) cells.push({ r, c: cDown });
+      if (cUp >= 0 && cUp < cols) cells.push({ r, c: cUp });
+    }
+  }
   if (t.special === "rainbow") {
     const target = randType();
     for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) if (state.board[r][c]?.type === target) cells.push({ r, c });
   }
+  const labels = { boom: "BOOM!", laserV: "Laser Vertical", laserD: "Laser Diagonal", lineH: "Laser Horizontal", lineV: "Laser Vertical", rainbow: "Rainbow Blast" };
+  comboBanner = { text: labels[t.special] || "SKILL!", life: 1 };
   clearCells(cells, 2);
   return true;
 }
@@ -354,8 +422,8 @@ async function resolveBoard(combo = 1, firstMatches = null) {
     state.bestCombo = Math.max(state.bestCombo, combo);
     updateMission("combo", combo);
     comboBanner = { text: combo > 1 ? `Combo x${combo}` : "MATCH!", life: 1 };
-    makeSpecials(matches.groups);
-    clearCells(matches.cells, combo);
+    const createdSpecials = makeSpecials(matches.groups);
+    clearCells(matches.cells, combo, createdSpecials);
     await sleep(180);
     dropTiles();
     await sleep(180);
@@ -364,15 +432,18 @@ async function resolveBoard(combo = 1, firstMatches = null) {
   }
 }
 function makeSpecials(groups) {
+  const created = new Map();
   groups.forEach((g) => {
     if (g.cells.length < 4) return;
     const pivot = g.cells[Math.floor(g.cells.length / 2)];
     const t = state.board[pivot.r][pivot.c];
-    if (!t) return;
-    t.special = g.cells.length >= 5 ? "rainbow" : g.dir === "h" ? "lineH" : "lineV";
+    if (!t || isBlocked(t)) return;
+    const special = g.cells.length >= 5 ? "laserD" : g.dir === "h" ? "boom" : "laserV";
+    created.set(`${pivot.r},${pivot.c}`, { type: t.type, special });
   });
+  return created;
 }
-function clearCells(cells, combo) {
+function clearCells(cells, combo, preservedSpecials = new Map()) {
   const unique = [...new Map(cells.map((c) => [`${c.r},${c.c}`, c])).values()];
   const score = unique.length * 45 * combo;
   const coin = Math.ceil(unique.length * combo * 1.6);
@@ -385,10 +456,17 @@ function clearCells(cells, combo) {
   updateMission("score", state.score);
   updateMission("clear", unique.length, true);
   unique.forEach(({ r, c }) => {
+    const preserved = preservedSpecials.get(`${r},${c}`);
     const x = boardX + c * (tileSize + gap) + tileSize / 2;
     const y = boardY + r * (tileSize + gap) + tileSize / 2;
     burst(x, y, tileTypes[state.board[r][c]?.type || 0].colors[1], 8 + combo * 2);
     spriteBurst(x, y, state.board[r][c]?.type || 0, combo);
+    if (preserved) {
+      state.board[r][c] = tile(preserved.type, preserved.special);
+      burst(x, y, "#72ffdd", 18);
+      floater("SKILL", x - 20, y - 12, "#ffffff");
+      return;
+    }
     state.board[r][c] = null;
   });
   floater(`+${score}`, 170, 254, "#fff2a8");
@@ -424,13 +502,14 @@ function shuffleBoard(cost = true) {
   save();
   updateHUD();
 }
-function useHammer(cell) {
+async function useHammer(cell) {
   if (state.boosters.hammer <= 0) return false;
   state.boosters.hammer--;
   hammerMode = false;
   clearCells([cell], 1);
+  await sleep(120);
   dropTiles();
-  resolveBoard(1);
+  await resolveBoard(1);
   toast("Hammer menghancurkan tile");
   save();
   updateHUD();
@@ -680,6 +759,7 @@ function drawTile(r, c, t) {
   roundRect(x, y, tileSize, tileSize, 12, "rgba(19,34,58,.04)");
   if (!item) return;
   if (isBlocked(item)) {
+    if (drawSpriteContain("tile_locked_block", x - 3, y - 3, tileSize + 6, tileSize + 6)) return;
     const g = ctx.createLinearGradient(x, y, x + tileSize, y + tileSize);
     g.addColorStop(0, "rgba(255,255,255,.82)");
     g.addColorStop(.48, "rgba(174,211,244,.88)");
@@ -695,6 +775,18 @@ function drawTile(r, c, t) {
   const type = tileTypes[item.type];
   const isSel = selected?.r === r && selected?.c === c;
   const pulse = isSel ? Math.sin(t * 9) * 2 + 3 : 0;
+  const skillFrames = skillFrameKeys[item.special];
+  const animatedSkillKey = skillFrames?.[Math.floor(t * 8) % skillFrames.length];
+  const skillSpriteKey = animatedSkillKey && spriteReady(animatedSkillKey) ? animatedSkillKey : skillSpriteKeys[item.special];
+  if (skillSpriteKey && spriteReady(skillSpriteKey)) {
+    ctx.save();
+    ctx.shadowColor = item.special === "boom" ? "#ffb52e" : "#12d6ff";
+    ctx.shadowBlur = isSel ? 18 : 7 + Math.sin(t * 8) * 2;
+    const skillPulse = 2 + Math.sin(t * 8) * 1.5;
+    drawSpriteContain(skillSpriteKey, x - 7 - (pulse + skillPulse) / 2, y - 7 - (pulse + skillPulse) / 2, tileSize + 14 + pulse + skillPulse, tileSize + 14 + pulse + skillPulse);
+    ctx.restore();
+    return;
+  }
   const spriteKey = tileSpriteKeys[item.type];
   if (spriteReady(spriteKey)) {
     ctx.save();
@@ -859,7 +951,13 @@ canvas.addEventListener("pointerup", (ev) => {
   }
   dragStart = null;
   if (!to || to.r < 0 || to.c < 0 || to.r >= rows || to.c >= cols) return;
-  if (hammerMode) return useHammer(from);
+  if (hammerMode) {
+    inputLocked = true;
+    useHammer(from).finally(() => {
+      inputLocked = false;
+    });
+    return;
+  }
   if (isBlocked(state.board[from.r][from.c])) {
     toast("Tile terkunci");
     sound(210, .05);

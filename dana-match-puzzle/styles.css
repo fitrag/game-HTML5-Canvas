@@ -246,7 +246,22 @@ button:active {
 .bottom-dock button.active:active {
   box-shadow: 0 2px 0 #0754d9, 0 8px 14px rgba(7, 84, 217, .18), inset 0 2px 0 rgba(255,255,255,.22);
 }
-.bottom-dock span { font-size: 19px; line-height: 1; }
+.bottom-dock span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+.bottom-dock span img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(16, 36, 67, .18));
+}
+.bottom-dock button.active span img {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .18)) saturate(1.08);
+}
 
 .sheet {
   position: absolute;
