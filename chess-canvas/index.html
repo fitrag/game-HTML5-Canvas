@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canvas Chess</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="shell">
+    <section id="menuScreen" class="menu-screen">
+      <div class="menu-copy">
+        <p class="eyebrow">Canvas Chess Atelier</p>
+        <h1>Catur tenang, tajam, dan siap melawan bot.</h1>
+        <p class="menu-lead">Pilih mode permainan, atur tingkat kesulitan, lalu mulai pertandingan di papan minimalis berbasis HTML5 Canvas.</p>
+      </div>
+
+      <div class="menu-card">
+        <div class="menu-group">
+          <span class="label">Mode</span>
+          <div class="option-grid">
+            <button class="option-button active" type="button" data-mode="pvp">
+              <strong>Player vs Player</strong>
+              <span>Main bergantian di perangkat yang sama.</span>
+            </button>
+            <button class="option-button" type="button" data-mode="bot">
+              <strong>Player vs Bot</strong>
+              <span>Kamu putih, bot bermain sebagai hitam.</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="difficultyGroup" class="menu-group muted-group">
+          <span class="label">Tingkat Kesulitan Bot</span>
+          <div class="difficulty-row">
+            <button class="pill-option active" type="button" data-difficulty="easy">Mudah</button>
+            <button class="pill-option" type="button" data-difficulty="normal">Normal</button>
+            <button class="pill-option" type="button" data-difficulty="hard">Sulit</button>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <span class="label">Warna Papan</span>
+          <div class="theme-row">
+            <button class="theme-option active" type="button" data-board-theme="classic"><span style="--light:#eadfc8;--dark:#9f7a5b"></span>Klasik</button>
+            <button class="theme-option" type="button" data-board-theme="forest"><span style="--light:#d9e7cf;--dark:#59745a"></span>Forest</button>
+            <button class="theme-option" type="button" data-board-theme="ocean"><span style="--light:#d7e8ea;--dark:#4d7f91"></span>Ocean</button>
+            <button class="theme-option" type="button" data-board-theme="mono"><span style="--light:#e8e4dc;--dark:#4c4a45"></span>Mono</button>
+          </div>
+        </div>
+
+        <button id="startGame" class="start-button" type="button">Mulai Permainan</button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="game-screen hidden">
+      <section class="hero game-hud">
+        <div class="hud-title">
+          <p class="eyebrow">Canvas Chess</p>
+          <h1>Battle Board</h1>
+        </div>
+        <div class="hero-actions hud-actions">
+          <button id="backMenu" class="ghost-button" type="button">Menu</button>
+          <button id="newGame" type="button">Restart</button>
+        </div>
+      </section>
+
+      <section class="game-card">
+        <div class="board-stage">
+          <div class="board-wrap">
+            <canvas id="board" width="720" height="720" aria-label="Papan permainan catur"></canvas>
+          </div>
+        </div>
+
+        <aside class="panel hud-panel">
+          <div class="status-block">
+            <span class="label">Mode</span>
+            <strong id="modeText">Player vs Player</strong>
+            <p id="difficultyText">Tanpa bot</p>
+          </div>
+          <div class="status-block">
+            <span class="label">Giliran</span>
+            <strong id="turnText">Putih</strong>
+          </div>
+          <div class="status-block">
+            <span class="label">Status</span>
+            <p id="statusText">Pilih bidak untuk melihat langkah legal.</p>
+          </div>
+          <div class="status-block">
+            <span class="label">Warna Papan</span>
+            <div class="theme-row compact">
+              <button class="theme-option active" type="button" data-board-theme="classic"><span style="--light:#eadfc8;--dark:#9f7a5b"></span>Klasik</button>
+              <button class="theme-option" type="button" data-board-theme="forest"><span style="--light:#d9e7cf;--dark:#59745a"></span>Forest</button>
+              <button class="theme-option" type="button" data-board-theme="ocean"><span style="--light:#d7e8ea;--dark:#4d7f91"></span>Ocean</button>
+              <button class="theme-option" type="button" data-board-theme="mono"><span style="--light:#e8e4dc;--dark:#4c4a45"></span>Mono</button>
+            </div>
+          </div>
+          <div class="captured">
+            <span class="label">Bidak Tertangkap</span>
+            <div>
+              <p>Putih menangkap</p>
+              <div id="whiteCaptured" class="pieces"></div>
+            </div>
+            <div>
+              <p>Hitam menangkap</p>
+              <div id="blackCaptured" class="pieces"></div>
+            </div>
+          </div>
+          <div class="hint">
+            <span>Klik bidak, lalu klik kotak tujuan.</span>
+            <span>Termasuk rokade, promosi ratu, skak, dan skakmat.</span>
+          </div>
+        </aside>
+      </section>
+
+      <div id="statusPopup" class="status-popup hidden" role="dialog" aria-live="polite" aria-modal="true">
+        <div class="popup-card">
+          <span id="popupKicker" class="label">Skak</span>
+          <strong id="popupTitle">Check!</strong>
+          <p id="popupMessage">Raja sedang diserang.</p>
+          <div class="popup-actions">
+            <button id="popupContinue" class="ghost-button" type="button">Lanjut</button>
+            <button id="popupNewGame" type="button">Game Baru</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

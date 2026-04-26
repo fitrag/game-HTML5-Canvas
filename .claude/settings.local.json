@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check \"C:/TestAI/game/shopee-tanam-canvas/game.js\")",
+      "Bash(printf n---n)",
+      "Bash(ls -la C:/TestAI/game/*)",
+      "Bash(node:*)"
+    ]
+  }
+}

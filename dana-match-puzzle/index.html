@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DANA Match Rush</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="phone-shell">
+    <section class="game-card">
+      <canvas id="gameCanvas" width="390" height="844" aria-label="Game match 3 DANA Match Rush"></canvas>
+
+      <div class="top-bar">
+        <div class="brand-pill balance-pill"><img src="assets/generated/sprites/app_emblem.png" alt="" /><b id="topBalanceText">0</b></div>
+        <button class="round-button" id="soundBtn" aria-label="Toggle suara">&#9835;</button>
+      </div>
+
+      <div class="hud-row">
+        <div class="hud-chip coin"><span class="hud-icon"><img src="assets/generated/sprites/tile_coin.png" alt="" /></span><b id="coinText">0</b></div>
+        <div class="hud-chip level"><span class="hud-icon level-icon">Lv</span><b id="levelText">1</b></div>
+        <div class="hud-chip moves"><span class="hud-icon moves-icon">Mv</span><b id="movesText">24</b></div>
+      </div>
+
+      <div id="toast" class="toast hidden">Selamat datang!</div>
+
+      <nav class="bottom-dock">
+        <button id="homeBtn" class="active"><span>&#10022;</span><b>Main</b></button>
+        <button data-panel="rewardPanel"><span>Rp</span><b>Hadiah</b></button>
+        <button data-panel="missionPanel"><span>&#9670;</span><b>Misi</b></button>
+        <button data-panel="boosterPanel"><span>&#9889;</span><b>Booster</b></button>
+      </nav>
+
+      <section id="rewardPanel" class="sheet hidden">
+        <header><h2>Dompet Hadiah</h2><button class="close-sheet">&times;</button></header>
+        <div class="wallet-card">
+          <img src="assets/generated/sprites/reward_wallet.png" alt="" />
+          <div>
+            <small>Saldo Rupiah Simulasi</small>
+            <strong id="sheetBalance">Rp0</strong>
+            <p>Reward bertambah saat level selesai. Ini hanya saldo simulasi game.</p>
+          </div>
+        </div>
+        <button id="withdrawJumpBtn" class="primary-cta">Tarik ke DANA</button>
+        <form id="withdrawForm" class="withdraw-form hidden">
+          <div class="withdraw-method"><span>Metode</span><b>DANA only</b></div>
+          <label class="withdraw-field">Nomor DANA<input id="danaNumberInput" type="tel" inputmode="numeric" autocomplete="off" placeholder="08xxxxxxxxxx" /></label>
+          <label class="withdraw-field">Nominal tarik<input id="withdrawAmountInput" type="number" inputmode="numeric" min="10" placeholder="Minimal Rp10" /></label>
+          <button class="primary-cta" type="submit">Konfirmasi Penarikan</button>
+          <p class="sheet-note">Penarikan ini hanya simulasi game dan tidak mengirim uang sungguhan.</p>
+        </form>
+        <div class="withdraw-log" id="withdrawLog"></div>
+        <div class="reward-log" id="rewardLog"></div>
+      </section>
+
+      <section id="missionPanel" class="sheet hidden">
+        <header><h2>Misi Harian</h2><button class="close-sheet">&times;</button></header>
+        <div class="mission-list" id="missionList"></div>
+      </section>
+
+      <section id="boosterPanel" class="sheet hidden">
+        <header><h2>Booster Kilat</h2><button class="close-sheet">&times;</button></header>
+        <div class="booster-grid">
+          <button class="booster-card" data-booster="hammer"><img src="assets/generated/sprites/booster_hammer.png" alt="" /><span class="booster-copy"><b>Hammer</b><small id="hammerText">0 stok</small></span><em>120 koin</em></button>
+          <button class="booster-card" data-booster="shuffle"><img src="assets/generated/sprites/booster_shuffle.png" alt="" /><span class="booster-copy"><b>Shuffle</b><small id="shuffleText">0 stok</small></span><em>90 koin</em></button>
+          <button class="booster-card" data-booster="moves"><img src="assets/generated/sprites/booster_moves.png" alt="" /><span class="booster-copy"><b>Moves</b><small id="extraMovesText">0 stok</small></span><em>150 koin</em></button>
+        </div>
+        <p class="sheet-note">Tap kartu untuk membeli. Hammer aktif saat stok tersedia lalu tap tile di board.</p>
+        <button id="resetBtn" class="ghost-cta">Reset progress</button>
+      </section>
+
+      <div id="startScreen" class="start-screen">
+        <img class="start-art" src="assets/generated/sprites/reward_chest.png" alt="" />
+        <div class="start-copy">
+          <div class="start-badge">Arcade Reward Puzzle</div>
+          <h1>DANA<br/>Match Rush</h1>
+          <p>Cocokkan tile neon, pecahkan combo besar, dan kumpulkan saldo Rupiah simulasi.</p>
+          <div class="telegram-login-card">
+            <div id="telegramProfile" class="telegram-profile hidden"></div>
+            <div id="telegramLoginBox" class="telegram-login-box"></div>
+            <small class="telegram-note">Login Telegram memakai widget resmi. Isi username bot di konfigurasi untuk mengaktifkannya.</small>
+          </div>
+          <button id="startBtn" class="start-button">Main Sekarang</button>
+          <small>Saldo Rupiah adalah reward simulasi game.</small>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>

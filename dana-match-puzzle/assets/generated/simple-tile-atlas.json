@@ -1,0 +1,83 @@
+{
+  "source": "../simple-tile-sheet.png",
+  "sprites": {
+    "tile_diamond": {
+      "file": "sprites/tile_diamond.png",
+      "sourceRect": {
+        "x": 160,
+        "y": 106,
+        "w": 352,
+        "h": 389
+      },
+      "size": {
+        "w": 352,
+        "h": 389
+      }
+    },
+    "tile_coin": {
+      "file": "sprites/tile_coin.png",
+      "sourceRect": {
+        "x": 512,
+        "y": 106,
+        "w": 512,
+        "h": 389
+      },
+      "size": {
+        "w": 512,
+        "h": 389
+      }
+    },
+    "tile_wallet": {
+      "file": "sprites/tile_wallet.png",
+      "sourceRect": {
+        "x": 1024,
+        "y": 106,
+        "w": 349,
+        "h": 389
+      },
+      "size": {
+        "w": 349,
+        "h": 389
+      }
+    },
+    "tile_star": {
+      "file": "sprites/tile_star.png",
+      "sourceRect": {
+        "x": 160,
+        "y": 526,
+        "w": 352,
+        "h": 390
+      },
+      "size": {
+        "w": 352,
+        "h": 390
+      }
+    },
+    "tile_drop": {
+      "file": "sprites/tile_drop.png",
+      "sourceRect": {
+        "x": 512,
+        "y": 526,
+        "w": 512,
+        "h": 390
+      },
+      "size": {
+        "w": 512,
+        "h": 390
+      }
+    },
+    "tile_gift": {
+      "file": "sprites/tile_gift.png",
+      "sourceRect": {
+        "x": 1024,
+        "y": 526,
+        "w": 349,
+        "h": 390
+      },
+      "size": {
+        "w": 349,
+        "h": 390
+      }
+    }
+  }
+}

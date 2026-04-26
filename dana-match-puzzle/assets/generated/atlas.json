@@ -1,0 +1,252 @@
+{
+  "source": "../dana-match-sprite-sheet.png",
+  "sprites": {
+    "tile_diamond": {
+      "file": "sprites/tile_diamond.png",
+      "sourceRect": {
+        "x": 47,
+        "y": 59,
+        "w": 191,
+        "h": 201
+      },
+      "size": {
+        "w": 191,
+        "h": 201
+      }
+    },
+    "tile_coin": {
+      "file": "sprites/tile_coin.png",
+      "sourceRect": {
+        "x": 256,
+        "y": 63,
+        "w": 188,
+        "h": 197
+      },
+      "size": {
+        "w": 188,
+        "h": 197
+      }
+    },
+    "tile_wallet": {
+      "file": "sprites/tile_wallet.png",
+      "sourceRect": {
+        "x": 455,
+        "y": 63,
+        "w": 186,
+        "h": 197
+      },
+      "size": {
+        "w": 186,
+        "h": 197
+      }
+    },
+    "tile_star": {
+      "file": "sprites/tile_star.png",
+      "sourceRect": {
+        "x": 650,
+        "y": 63,
+        "w": 185,
+        "h": 197
+      },
+      "size": {
+        "w": 185,
+        "h": 197
+      }
+    },
+    "tile_drop": {
+      "file": "sprites/tile_drop.png",
+      "sourceRect": {
+        "x": 841,
+        "y": 63,
+        "w": 189,
+        "h": 197
+      },
+      "size": {
+        "w": 189,
+        "h": 197
+      }
+    },
+    "tile_gift": {
+      "file": "sprites/tile_gift.png",
+      "sourceRect": {
+        "x": 1040,
+        "y": 63,
+        "w": 186,
+        "h": 197
+      },
+      "size": {
+        "w": 186,
+        "h": 197
+      }
+    },
+    "booster_hammer": {
+      "file": "sprites/booster_hammer.png",
+      "sourceRect": {
+        "x": 134,
+        "y": 281,
+        "w": 237,
+        "h": 238
+      },
+      "size": {
+        "w": 237,
+        "h": 238
+      }
+    },
+    "booster_shuffle": {
+      "file": "sprites/booster_shuffle.png",
+      "sourceRect": {
+        "x": 505,
+        "y": 281,
+        "w": 237,
+        "h": 238
+      },
+      "size": {
+        "w": 237,
+        "h": 238
+      }
+    },
+    "booster_moves": {
+      "file": "sprites/booster_moves.png",
+      "sourceRect": {
+        "x": 871,
+        "y": 281,
+        "w": 236,
+        "h": 238
+      },
+      "size": {
+        "w": 236,
+        "h": 238
+      }
+    },
+    "fx_blue_burst": {
+      "file": "sprites/fx_blue_burst.png",
+      "sourceRect": {
+        "x": 51,
+        "y": 510,
+        "w": 263,
+        "h": 250
+      },
+      "size": {
+        "w": 263,
+        "h": 250
+      }
+    },
+    "fx_coin_burst": {
+      "file": "sprites/fx_coin_burst.png",
+      "sourceRect": {
+        "x": 370,
+        "y": 510,
+        "w": 310,
+        "h": 256
+      },
+      "size": {
+        "w": 310,
+        "h": 256
+      }
+    },
+    "fx_wallet_burst": {
+      "file": "sprites/fx_wallet_burst.png",
+      "sourceRect": {
+        "x": 660,
+        "y": 531,
+        "w": 229,
+        "h": 234
+      },
+      "size": {
+        "w": 229,
+        "h": 234
+      }
+    },
+    "fx_pink_burst": {
+      "file": "sprites/fx_pink_burst.png",
+      "sourceRect": {
+        "x": 955,
+        "y": 510,
+        "w": 238,
+        "h": 257
+      },
+      "size": {
+        "w": 238,
+        "h": 257
+      }
+    },
+    "badge_match": {
+      "file": "sprites/badge_match.png",
+      "sourceRect": {
+        "x": 55,
+        "y": 755,
+        "w": 380,
+        "h": 220
+      },
+      "size": {
+        "w": 380,
+        "h": 220
+      }
+    },
+    "badge_combo_x2": {
+      "file": "sprites/badge_combo_x2.png",
+      "sourceRect": {
+        "x": 479,
+        "y": 777,
+        "w": 316,
+        "h": 203
+      },
+      "size": {
+        "w": 316,
+        "h": 203
+      }
+    },
+    "badge_combo_x3": {
+      "file": "sprites/badge_combo_x3.png",
+      "sourceRect": {
+        "x": 850,
+        "y": 769,
+        "w": 297,
+        "h": 211
+      },
+      "size": {
+        "w": 297,
+        "h": 211
+      }
+    },
+    "reward_wallet": {
+      "file": "sprites/reward_wallet.png",
+      "sourceRect": {
+        "x": 135,
+        "y": 990,
+        "w": 270,
+        "h": 220
+      },
+      "size": {
+        "w": 270,
+        "h": 220
+      }
+    },
+    "reward_chest": {
+      "file": "sprites/reward_chest.png",
+      "sourceRect": {
+        "x": 508,
+        "y": 975,
+        "w": 273,
+        "h": 235
+      },
+      "size": {
+        "w": 273,
+        "h": 235
+      }
+    },
+    "app_emblem": {
+      "file": "sprites/app_emblem.png",
+      "sourceRect": {
+        "x": 888,
+        "y": 995,
+        "w": 210,
+        "h": 209
+      },
+      "size": {
+        "w": 210,
+        "h": 209
+      }
+    }
+  }
+}

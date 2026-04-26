@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Kebun Hadiah Canvas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="phone-shell">
+    <section class="game-card">
+      <canvas id="gameCanvas" width="390" height="844" aria-label="Game kebun hadiah"></canvas>
+
+      <div class="top-safe">
+        <button class="round-button" id="soundBtn" aria-label="Toggle suara">♪</button>
+      </div>
+
+      <div class="hud-row">
+        <div class="hud-chip coin"><span>●</span><b id="coinText">0</b></div>
+        <div class="hud-chip gem"><span>◆</span><b id="gemText">0</b></div>
+        <div class="hud-chip level"><span>Lv</span><b id="levelText">1</b></div>
+      </div>
+
+      <div class="resource-strip">
+        <button class="resource-card active" data-tool="seed"><span class="tool-art seed-art"></span><b id="seedText">6</b><small id="seedNameText">Benih</small></button>
+        <button class="resource-card" data-tool="water"><span class="tool-art water-art"></span><b id="waterText">4</b><small>Air</small></button>
+        <button class="resource-card" data-tool="fertilizer"><span class="tool-art fert-art"></span><b id="fertText">2</b><small>Pupuk</small></button>
+      </div>
+
+      <div class="xp-wrap">
+        <div class="xp-label"><span>XP Panen</span><b id="xpText">0/120</b></div>
+        <div class="xp-track"><div id="xpFill"></div></div>
+      </div>
+
+      <div id="toast" class="toast hidden">Selamat datang di kebun!</div>
+
+      <nav class="bottom-dock">
+        <button data-panel="shopPanel"><span>🛒</span><b>Toko</b></button>
+        <button id="homeBtn" class="primary-action active"><span>🌱</span><b>Kebun</b></button>
+        <button data-panel="questPanel"><span>📋</span><b>Misi</b></button>
+        <button data-panel="giftPanel"><span>🎁</span><b>Bonus</b></button>
+      </nav>
+
+      <section id="shopPanel" class="sheet hidden">
+        <header><h2>Toko Mini Kebun</h2><button class="close-sheet">×</button></header>
+        <p class="sheet-copy">Isi ulang item untuk mempercepat panen.</p>
+        <div class="shop-grid seed-shop" id="seedShop"></div>
+        <div class="shop-grid item-shop">
+          <button class="buy-card" data-buy="water"><span class="big water-art"></span><b>+5 Air</b><small>35 koin</small></button>
+          <button class="buy-card" data-buy="fertilizer"><span class="big fert-art"></span><b>+3 Pupuk</b><small>50 koin</small></button>
+        </div>
+      </section>
+
+      <section id="questPanel" class="sheet hidden">
+        <header><h2>Misi Hari Ini</h2><button class="close-sheet">×</button></header>
+        <div class="quest-list" id="questList"></div>
+        <button id="claimQuest" class="cta">Klaim misi selesai</button>
+      </section>
+
+      <section id="giftPanel" class="sheet hidden">
+        <header><h2>Bonus Berkebun</h2><button class="close-sheet">×</button></header>
+        <div class="gift-orb">✦</div>
+        <p class="sheet-copy">Ambil bonus harian untuk lanjut menanam.</p>
+        <button id="claimGift" class="cta">Klaim +80 Koin +2 Air</button>
+      </section>
+
+      <div id="startScreen" class="start-screen">
+        <div class="start-badge">Canvas Mini Game</div>
+        <h1>Kebun<br/>Hadiah</h1>
+        <p>Tanam bibit, siram, pupuk, lalu panen buah berkilau seperti game mobile.</p>
+        <button id="startBtn" class="start-button">Mulai Berkebun</button>
+      </div>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
